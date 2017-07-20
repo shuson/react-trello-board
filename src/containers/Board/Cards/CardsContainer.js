@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { DropTarget, DragSource } from 'react-dnd';
 
 import Cards from './Cards';
+import EditableCard from './EditableCard'
 
 const listSource = {
   beginDrag(props) {
@@ -54,6 +55,7 @@ export default class CardsContainer extends Component {
     connectDragSource: PropTypes.func.isRequired,
     item: PropTypes.object,
     x: PropTypes.number,
+    saveCard: PropTypes.func,
     moveCard: PropTypes.func.isRequired,
     moveList: PropTypes.func.isRequired,
     isDragging: PropTypes.bool,
@@ -62,15 +64,41 @@ export default class CardsContainer extends Component {
     isScrolling: PropTypes.bool
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      showNewCard: true
+    };
+  }
+
+  toggleNewCard() {
+    this.state.showNewCard = !this.state.showNewCard;
+  }
+
   render() {
-    const { connectDropTarget, connectDragSource, item, x, moveCard, isDragging } = this.props;
+    const { connectDropTarget, connectDragSource, item, x, moveCard, isDragging, saveCard } = this.props;
     const opacity = isDragging ? 0.5 : 1;
+    const btnStyle = {
+      display: item.phase.name === 'New' ? 'block' : 'none'
+    };
+    let newCardStyle = {
+      display: this.state.showNewCard ? 'block' : 'none'
+    };
+
+    let newCard;
+    if (item.phase.name === 'New') {
+      newCard = <EditableCard style={newCardStyle} item={{}} saveCard={saveCard} />;
+    }
 
     return connectDragSource(connectDropTarget(
       <div className="desk" style={{ opacity }}>
         <div className="desk-head">
-          <div className="desk-name">{item.name}</div>
+          <div className="desk-name">{item.phase.name}</div>
+          <div className="desk-operation">
+            <button style={btnStyle} onClick={this.toggleNewCard()}>add</button>
+          </div>
         </div>
+        {newCard}
         <Cards
           moveCard={moveCard}
           x={x}

@@ -3,6 +3,7 @@ import { Record } from 'immutable';
 import {
   GET_LISTS,
   GET_LISTS_START,
+  ADD_CARD,
   MOVE_CARD,
   MOVE_LIST,
   SAVE_BOARD,
@@ -27,6 +28,12 @@ export default function lists(state = initialState, action) {
         ctx.set('isFetching', false)
             .set('lists', action.lists);
       });
+    case ADD_CARD: {
+      const newLists = [...state.lists];
+      return state.withMutations((ctx) => {
+        ctx.set('lists', newLists);
+      });
+    }
     case MOVE_CARD: {
       const newLists = [...state.lists];
       const { lastX, lastY, nextX, nextY } = action;
@@ -58,7 +65,6 @@ export default function lists(state = initialState, action) {
     }
     case SAVE_BOARD: {
       const newLists = [...state.lists];
-      console.log(newLists); // save to server
       return state.withMutations((ctx) => {
         ctx.set('lists', newLists);
       });

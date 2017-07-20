@@ -2,34 +2,39 @@ import request from 'superagent';
 
 export const GET_LISTS_START = 'GET_LISTS_START';
 export const GET_LISTS = 'GET_LISTS';
+export const ADD_CARD = 'ADD_CARD';
 export const MOVE_CARD = 'MOVE_CARD';
 export const MOVE_LIST = 'MOVE_LIST';
 export const SAVE_BOARD = 'SAVE_BOARD';
 export const TOGGLE_DRAGGING = 'TOGGLE_DRAGGING';
 
 export function getLists() {
-  
   return (dispatch) => {
     request
-      .get('http://localhost:3001/dummy')
+      .get('http://localhost:3001/project/dummy')
       .end((err, res) => {
         const result = res.body;
         const quantity = result.length;
         const lists = [];
         for (let i = 0; i < quantity; i++) {
           const cards = [];
-          const cardsNumber = result[i].tickets.length;
+          const cardsNumber = result[i].cards.length;
           for (let ic = 0; ic < cardsNumber; ic++) {
-            cards.push(result[i].tickets[ic]);
+            cards.push(result[i].cards[ic]);
           }
           lists.push({
-            id: i,
-            name: result[i].phase.name,
+            phase: result[i].phase,
             cards
           });
         }
         dispatch({ type: GET_LISTS, lists, isFetching: true });
-      })
+      });
+  };
+}
+
+export function addCard() {
+  return (dispatch) => {
+    dispatch({ type: ADD_CARD });
   };
 }
 
@@ -53,6 +58,12 @@ export function toggleDragging(isDragging) {
 
 export function saveBoard(lists) {
   return (dispatch) => {
-    dispatch({type: SAVE_BOARD, lists});
+    request
+      .post("http://localhost:3001/project/dummy")
+      .set('Content-Type', 'application/json')
+      .send(lists)
+      .end((err, res) => {
+        dispatch({type: SAVE_BOARD, lists});
+      });
   }
 }
