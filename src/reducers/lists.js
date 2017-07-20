@@ -5,6 +5,7 @@ import {
   GET_LISTS_START,
   MOVE_CARD,
   MOVE_LIST,
+  SAVE_BOARD,
   TOGGLE_DRAGGING
 } from '../actions/lists';
 
@@ -16,7 +17,6 @@ const InitialState = Record({
 });
 /* eslint-enable new-cap */
 const initialState = new InitialState;
-
 
 export default function lists(state = initialState, action) {
   switch (action.type) {
@@ -55,6 +55,13 @@ export default function lists(state = initialState, action) {
     }
     case TOGGLE_DRAGGING: {
       return state.set('isDragging', action.isDragging);
+    }
+    case SAVE_BOARD: {
+      const newLists = [...state.lists];
+      console.log(newLists); // save to server
+      return state.withMutations((ctx) => {
+        ctx.set('lists', newLists);
+      });
     }
     default:
       return state;

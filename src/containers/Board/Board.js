@@ -26,6 +26,7 @@ export default class Board extends Component {
     getLists: PropTypes.func.isRequired,
     moveCard: PropTypes.func.isRequired,
     moveList: PropTypes.func.isRequired,
+    saveBoard: PropTypes.func.isRequired,
     lists: PropTypes.array.isRequired,
   }
 
@@ -42,7 +43,7 @@ export default class Board extends Component {
   }
 
   componentWillMount() {
-    this.props.getLists(10);
+    this.props.getLists();
   }
 
   startScrolling(direction) {
@@ -80,6 +81,7 @@ export default class Board extends Component {
 
   moveCard(lastX, lastY, nextX, nextY) {
     this.props.moveCard(lastX, lastY, nextX, nextY);
+    this.props.saveBoard(this.props.lists);
   }
 
   moveList(listId, nextX) {
