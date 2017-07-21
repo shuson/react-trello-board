@@ -25,6 +25,7 @@ export default class Board extends Component {
   static propTypes = {
     getLists: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired,
+    trashCard: PropTypes.func.isRequired,
     moveCard: PropTypes.func.isRequired,
     moveList: PropTypes.func.isRequired,
     saveBoard: PropTypes.func.isRequired,
@@ -34,6 +35,8 @@ export default class Board extends Component {
   constructor(props) {
     super(props);
     this.addCard = this.addCard.bind(this);
+    this.editCard = this.editCard.bind(this);
+    this.trashCard = this.trashCard.bind(this);
     this.moveCard = this.moveCard.bind(this);
     this.moveList = this.moveList.bind(this);
     this.findList = this.findList.bind(this);
@@ -87,6 +90,35 @@ export default class Board extends Component {
     this.props.saveBoard(this.props.lists);
   }
 
+  editCard(card) {
+    const { lists } = this.props;
+    
+    lists.forEach((list) => {
+      list.cards.forEach(c => {
+        if(c.id === card.id) {
+          c.assignee = card.assignee;
+          c.description = card.description;
+        }
+      })
+    });
+
+    this.props.saveBoard(lists);
+  }
+
+  trashCard(cardId) {
+    const { lists } = this.props;
+
+    lists.forEach((list) => {
+      list.cards.forEach(c => {
+        if(c.id === cardId) {
+          c.isTrashed = true;
+        }
+      })
+    });
+
+    this.props.saveBoard(lists);
+  }
+
   moveCard(lastX, lastY, nextX, nextY) {
     this.props.moveCard(lastX, lastY, nextX, nextY);
     this.props.saveBoard(this.props.lists);
@@ -118,7 +150,9 @@ export default class Board extends Component {
             key={item.id}
             id={item.id}
             item={item}
-            saveCard={this.addCard}
+            addCard={this.addCard}
+            trashCard={this.trashCard}
+            editCard={this.editCard}
             moveCard={this.moveCard}
             moveList={this.moveList}
             startScrolling={this.startScrolling}

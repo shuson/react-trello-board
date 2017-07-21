@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { DropTarget, DragSource } from 'react-dnd';
 
 import Cards from './Cards';
-import EditableCard from './EditableCard'
+import EditableCard from './EditableCard';
 
 const listSource = {
   beginDrag(props) {
@@ -55,7 +55,9 @@ export default class CardsContainer extends Component {
     connectDragSource: PropTypes.func.isRequired,
     item: PropTypes.object,
     x: PropTypes.number,
-    saveCard: PropTypes.func,
+    addCard: PropTypes.func,
+    trashCard: PropTypes.func,
+    editCard: PropTypes.func.isRequired,
     moveCard: PropTypes.func.isRequired,
     moveList: PropTypes.func.isRequired,
     isDragging: PropTypes.bool,
@@ -67,40 +69,41 @@ export default class CardsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showNewCard: true
+      showNewCard: false,
+      btnTxt: 'Add New Card'
     };
+    this.toggleNewCard = this.toggleNewCard.bind(this);
   }
 
   toggleNewCard() {
-    this.state.showNewCard = !this.state.showNewCard;
+    this.setState({
+      showNewCard: !this.state.showNewCard,
+      btnTxt: this.state.btnTxt === 'Close' ? 'Add New Card' : 'Close'
+    });
   }
 
   render() {
-    const { connectDropTarget, connectDragSource, item, x, moveCard, isDragging, saveCard } = this.props;
+    const { connectDropTarget, connectDragSource, item, x, moveCard, isDragging, addCard, trashCard, editCard } = this.props;
     const opacity = isDragging ? 0.5 : 1;
     const btnStyle = {
       display: item.phase.name === 'New' ? 'block' : 'none'
     };
-    let newCardStyle = {
-      display: this.state.showNewCard ? 'block' : 'none'
-    };
-
-    let newCard;
-    if (item.phase.name === 'New') {
-      newCard = <EditableCard style={newCardStyle} item={{}} saveCard={saveCard} />;
-    }
 
     return connectDragSource(connectDropTarget(
       <div className="desk" style={{ opacity }}>
         <div className="desk-head">
           <div className="desk-name">{item.phase.name}</div>
           <div className="desk-operation">
-            <button style={btnStyle} onClick={this.toggleNewCard()}>add</button>
+            <button style={btnStyle} onClick={this.toggleNewCard}>{this.state.btnTxt}</button>
           </div>
         </div>
-        {newCard}
+        {
+          this.state.showNewCard && item.phase.name === 'New' ? <EditableCard item={{}} addCard={addCard} /> : null
+        }
         <Cards
           moveCard={moveCard}
+          trashCard={trashCard}
+          editCard={editCard}
           x={x}
           cards={item.cards}
           startScrolling={this.props.startScrolling}

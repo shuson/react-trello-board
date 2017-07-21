@@ -3,10 +3,6 @@ Welcome to the React Trello board. A [Trello](http://trello.com) like board base
 
 ![`board`](https://s3.amazonaws.com/react-trello/board_screen.png)
 
-## Live demo
-For a live demo of the project have a look at http://react-trello-board.web-pal.com
-
-
 ## Installation
 Firstly make sure that you have [Node](https://nodejs.org/en/download/) and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)  installed.
 Next clone this repo https://github.com/web-pal/react-trello-board.git. You can do this by going into your shell of choice and entering

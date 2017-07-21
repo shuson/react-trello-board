@@ -1,61 +1,61 @@
-import React, { PropTypes } from 'react';
-
-const propTypes = {
-  item: PropTypes.object.isRequired,
-  style: PropTypes.object,
-  saveCard: PropTypes.func.isRequired,
-};
+import React, { Component, PropTypes } from 'react';
 
 const galPng = require('../../../assets/images/gal.png');
 
-const EditableCard = (props) => {
-  const { style, item, saveCard } = props;
-  item.assignee = {}
-  function onIdChange(e) {
-    item.id = e.target.value;
+class EditableCard extends Component {
+  static propTypes = {
+    addCard: PropTypes.func.isRequired
   }
 
-  function onLastNameChange(e) {
-    item.assignee.lastName = e.target.value;
+  constructor(props) {
+    super(props);
+    this.state = {
+      item: {
+      }
+    };
+
+    this.save = this.save.bind(this);
+    this.onChangeEvent = this.onChangeEvent.bind(this);
   }
 
-  function onFirstNameChange(e) {
-    item.assignee.firstName = e.target.value;
+  onChangeEvent(event) {
+    this.state.item[event.target.name] = event.target.value;
+    this.setState({
+      item: this.state.item
+    });
   }
 
-  function onDescChange(e) {
-    item.description = e.target.value;
+  save() {
+    if (this.state.item.id) {
+      this.props.addCard(this.state.item);
+    } else {
+      alert("Id must not be null!");
+    }
   }
 
-  function save() {
-    saveCard(item);
-  }
-
-  return (
-    <div style={style} className="item" id={style ? item.id : null}>
+  render() {
+    return (<div className="item">
       <div className="item-name">
-        <input onChange={onIdChange} />
+        <label htmlFor="id">Id: </label><input name="id" value={this.state.item.id} onChange={this.onChangeEvent} />
       </div>
       <div className="item-container">
         <div className="item-content">
           <div className="item-author">
-            <label htmlFor="firstNameIpt">First Name: </label><input name="firstNameIpt" onChange={onFirstNameChange} />
+            <label htmlFor="assignee">Assignee Name: </label>
+            <input name="assignee" value={this.state.item.assignee} onChange={this.onChangeEvent} />
             <br /><br />
-            <label htmlFor="lastNameIpt">Last Name: </label><input name="lastNameIpt" onChange={onLastNameChange} />
           </div>
-          <p>Description</p>
-          <textarea name="description" style={{ width: '90%' }} onChange={onDescChange} />
+          <p>Description:</p>
+          <textarea name="description" value={this.state.item.description} style={{ width: '90%' }} onChange={this.onChangeEvent} />
         </div>
       </div>
       <div className="item-perfomers">
         <div className="delete-perfomers">
-          <button onClick={save}><img src={galPng} alt="Save" /></button>
+          <button onClick={this.save}><img src={galPng} alt="Save" /></button>
         </div>
       </div>
-    </div>
-  );
-};
-
-EditableCard.propTypes = propTypes;
+    </div>);
+  }
+}
 
 export default EditableCard;

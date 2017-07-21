@@ -3,6 +3,7 @@ import request from 'superagent';
 export const GET_LISTS_START = 'GET_LISTS_START';
 export const GET_LISTS = 'GET_LISTS';
 export const ADD_CARD = 'ADD_CARD';
+export const TRASH_CARD = 'TRASH_CARD';
 export const MOVE_CARD = 'MOVE_CARD';
 export const MOVE_LIST = 'MOVE_LIST';
 export const SAVE_BOARD = 'SAVE_BOARD';
@@ -44,6 +45,12 @@ export function moveList(lastX, nextX) {
   };
 }
 
+export function trashCard() {
+  return (dispatch) => {
+    dispatch({ type: TRASH_CARD });
+  };
+}
+
 export function moveCard(lastX, lastY, nextX, nextY) {
   return (dispatch) => {
     dispatch({ type: MOVE_CARD, lastX, lastY, nextX, nextY });
@@ -63,7 +70,7 @@ export function saveBoard(lists) {
       .set('Content-Type', 'application/json')
       .send(lists)
       .end((err, res) => {
-        dispatch({type: SAVE_BOARD, lists});
+        dispatch({ type: SAVE_BOARD, lists });
       });
   }
 }

@@ -4,6 +4,7 @@ import {
   GET_LISTS,
   GET_LISTS_START,
   ADD_CARD,
+  TRASH_CARD,
   MOVE_CARD,
   MOVE_LIST,
   SAVE_BOARD,
@@ -29,6 +30,12 @@ export default function lists(state = initialState, action) {
             .set('lists', action.lists);
       });
     case ADD_CARD: {
+      const newLists = [...state.lists];
+      return state.withMutations((ctx) => {
+        ctx.set('lists', newLists);
+      });
+    }
+    case TRASH_CARD: {
       const newLists = [...state.lists];
       return state.withMutations((ctx) => {
         ctx.set('lists', newLists);

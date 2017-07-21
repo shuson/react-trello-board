@@ -86,6 +86,8 @@ export default class Cards extends Component {
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
     moveCard: PropTypes.func.isRequired,
+    trashCard: PropTypes.func.isRequired,
+    editCard: PropTypes.func.isRequired,
     cards: PropTypes.array.isRequired,
     x: PropTypes.number.isRequired,
     isOver: PropTypes.bool,
@@ -105,7 +107,7 @@ export default class Cards extends Component {
   }
 
   render() {
-    const { connectDropTarget, x, cards, isOver, canDrop } = this.props;
+    const { connectDropTarget, x, cards, isOver, canDrop, trashCard, editCard } = this.props;
     const { placeholderIndex } = this.state;
 
     let isPlaceHold = false;
@@ -119,11 +121,13 @@ export default class Cards extends Component {
           isPlaceHold = true;
         }
       }
-      if (item !== undefined) {
+      if (item !== undefined && !item.isTrashed) {
         cardList.push(
           <Card x={x} y={i}
             item={item}
             key={item.id}
+            editCard={editCard}
+            trashCard={trashCard}
             stopScrolling={this.props.stopScrolling}
           />
         );
