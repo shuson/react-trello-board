@@ -1,6 +1,7 @@
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('data/demodb');
 
+// run this at the very beginning
 db.serialize(function() {
     db.run("CREATE TABLE IF NOT EXISTS project (name TEXT UNIQUE, tasks TEXT)");
 

@@ -4,26 +4,25 @@ const webpack = require('webpack');
 const shell = require('shelljs');
 
 shell.rm('-rf', './dist');
+
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
-  entry: [
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server',
-    './src/index'
-  ],
+  devtool: 'eval',
+
+  entry: './src/index',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
     publicPath: '/dist/'
   },
+
   plugins: [
     new webpack.DefinePlugin({
-      __DEV__: true,
-      'process.env.NODE_ENV': JSON.stringify('development'),
-      'process.env.BROWSER': true
-    }),
-    new webpack.HotModuleReplacementPlugin()
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    })
   ],
+
   module: {
     loaders: [{
       test: /\.js$/,
@@ -50,4 +49,3 @@ module.exports = {
     dns: 'empty'
   }
 };
-/* eslint-enable global-require, react/jsx-first-prop-new-line */
