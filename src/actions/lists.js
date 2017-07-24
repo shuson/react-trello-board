@@ -1,3 +1,5 @@
+import cfg from '../config';
+
 import request from 'superagent';
 
 export const GET_LISTS_START = 'GET_LISTS_START';
@@ -12,7 +14,7 @@ export const TOGGLE_DRAGGING = 'TOGGLE_DRAGGING';
 export function getLists() {
   return (dispatch) => {
     request
-      .get('http://localhost:3001/project/dummy')
+      .get(cfg.baseUrl + '/project/dummy')
       .end((err, res) => {
         const result = res.body;
         const quantity = result.length;
@@ -66,7 +68,7 @@ export function toggleDragging(isDragging) {
 export function saveBoard(lists) {
   return (dispatch) => {
     request
-      .post("http://localhost:3001/project/dummy")
+      .post(cfg.baseUrl + '/project/dummy')
       .set('Content-Type', 'application/json')
       .send(lists)
       .end((err, res) => {

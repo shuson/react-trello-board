@@ -1,3 +1,3 @@
-module.exports = {
-  baseUrl: 'http://127.0.0.1:5000'
+export default {
+  baseUrl: 'http://13.198.98.236:3001'
 };

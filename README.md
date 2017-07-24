@@ -31,16 +31,24 @@ cd server
 npm install
 ```
 
-### 4, start up
+### 4, start up a dev server
 Start up a local server
 ```
 // in /react-trllo-board
-npm start
+npm run dev
 
 // in ./server
 node index.js
 ```
 Now visit [`localhost:3000`](http://localhost:3000) from your browser. Now your app should be up and running.
+
+### 5, build up for production
+You need to setup a backend server as /server folder shows.
+And modify ./src/config/config.prod.js to your backend server
+Then run
+```
+node run build
+```
 
 ## Contribute
 We are very happy for any input and potential contributions for this project. 
