@@ -20,6 +20,7 @@ class EditableCard extends Component {
 
   onChangeEvent(event) {
     this.state.item[event.target.name] = event.target.value;
+    this.state.item.updateAt = new Date().toLocaleDateString();
     this.setState({
       item: this.state.item
     });

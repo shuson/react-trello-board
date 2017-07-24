@@ -26,6 +26,7 @@ class Card extends Component {
 
   onChangeEvent(event) {
     this.state.item[event.target.name] = event.target.value;
+    this.state.item.updateAt = new Date().toLocaleDateString();
     this.setState({
       item: this.state.item
     });
@@ -45,9 +46,13 @@ class Card extends Component {
   }
 
   render() {
+    let dateTimeStyle = {
+      float: 'right'
+    };
+
     return (
       <div style={this.props.style} className="item" id={this.props.style ? this.props.item.id : null}>
-        <div className="item-name">{this.props.item.id}</div>
+        <div className="item-name">{this.props.item.id} <span style={dateTimeStyle}> Updated At: {this.props.item.updateAt}</span></div>
         <div className="item-container">
           <div className="item-avatar-wrap">
             <Avatar name={this.props.item.assignee} round="true" size="50" />
