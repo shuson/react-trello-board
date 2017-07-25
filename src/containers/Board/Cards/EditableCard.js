@@ -29,6 +29,9 @@ class EditableCard extends Component {
   save() {
     if (this.state.item.id) {
       this.props.addCard(this.state.item);
+      this.setState({
+        item: {}
+      });
     } else {
       alert("Id must not be null!");
     }
