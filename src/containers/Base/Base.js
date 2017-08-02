@@ -4,7 +4,6 @@ const propTypes = {
   children: PropTypes.element.isRequired
 };
 
-
 const BaseContainer = (props) => (
   <main>
     {props.children}

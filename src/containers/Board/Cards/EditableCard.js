@@ -30,10 +30,14 @@ class EditableCard extends Component {
     if (this.state.item.id) {
       this.props.addCard(this.state.item);
       this.setState({
-        item: {}
+        item: {
+          id: '',
+          projectName: '',
+          description: ''
+        }
       });
     } else {
-      alert("Id must not be null!");
+      alert('Id must not be null!');
     }
   }
 
@@ -45,8 +49,8 @@ class EditableCard extends Component {
       <div className="item-container">
         <div className="item-content">
           <div className="item-author">
-            <label htmlFor="assignee">Assignee Name: </label>
-            <input name="assignee" value={this.state.item.assignee} onChange={this.onChangeEvent} />
+            <label htmlFor="projectName">Project Name: </label>
+            <input name="projectName" value={this.state.item.projectName} onChange={this.onChangeEvent} />
             <br /><br />
           </div>
           <p>Description:</p>

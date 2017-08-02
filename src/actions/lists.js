@@ -11,10 +11,10 @@ export const MOVE_LIST = 'MOVE_LIST';
 export const SAVE_BOARD = 'SAVE_BOARD';
 export const TOGGLE_DRAGGING = 'TOGGLE_DRAGGING';
 
-export function getLists() {
+export function getLists(developerName) {
   return (dispatch) => {
     request
-      .get(cfg.baseUrl + '/project/dummy')
+      .get(cfg.baseUrl + '/developer/' + developerName)
       .end((err, res) => {
         const result = res.body;
         const quantity = result.length;
@@ -65,10 +65,10 @@ export function toggleDragging(isDragging) {
   };
 }
 
-export function saveBoard(lists) {
+export function saveBoard(lists, developerName) {
   return (dispatch) => {
     request
-      .post(cfg.baseUrl + '/project/dummy')
+      .post(cfg.baseUrl + '/developer/' + developerName)
       .set('Content-Type', 'application/json')
       .send(lists)
       .end((err, res) => {

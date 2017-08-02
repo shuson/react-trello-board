@@ -23,6 +23,7 @@ function mapDispatchToProps(dispatch) {
 @DragDropContext(HTML5Backend)
 export default class Board extends Component {
   static propTypes = {
+    boardName: PropTypes.string.isRequired,
     getLists: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired,
     trashCard: PropTypes.func.isRequired,
@@ -48,7 +49,7 @@ export default class Board extends Component {
   }
 
   componentWillMount() {
-    this.props.getLists();
+    this.props.getLists(this.props.boardName);
   }
 
   startScrolling(direction) {
@@ -85,28 +86,30 @@ export default class Board extends Component {
   }
 
   addCard(card) {
+    const { lists, boardName } = this.props;
+
     this.props.addCard();
     this.props.lists[0].cards.push(card);
-    this.props.saveBoard(this.props.lists);
+    this.props.saveBoard(lists, boardName);
   }
 
   editCard(card) {
-    const { lists } = this.props;
+    const { lists, boardName } = this.props;
     
     lists.forEach((list) => {
       list.cards.forEach(c => {
         if(c.id === card.id) {
-          c.assignee = card.assignee;
+          c.projectName = card.projectName;
           c.description = card.description;
         }
       })
     });
 
-    this.props.saveBoard(lists);
+    this.props.saveBoard(lists, boardName);
   }
 
   trashCard(cardId) {
-    const { lists } = this.props;
+    const { lists, boardName } = this.props;
 
     lists.forEach((list) => {
       list.cards.forEach(c => {
@@ -116,12 +119,14 @@ export default class Board extends Component {
       })
     });
 
-    this.props.saveBoard(lists);
+    this.props.saveBoard(lists, boardName);
   }
 
   moveCard(lastX, lastY, nextX, nextY) {
+    const { lists, boardName } = this.props;
+
     this.props.moveCard(lastX, lastY, nextX, nextY);
-    this.props.saveBoard(this.props.lists);
+    this.props.saveBoard(lists, boardName);
   }
 
   moveList(listId, nextX) {

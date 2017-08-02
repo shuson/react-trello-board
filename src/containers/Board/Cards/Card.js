@@ -55,18 +55,18 @@ class Card extends Component {
         <div className="item-name">{this.props.item.id} <span style={dateTimeStyle}> Updated At: {this.props.item.updateAt}</span></div>
         <div className="item-container">
           <div className="item-avatar-wrap">
-            <Avatar name={this.props.item.assignee} round="true" size="50" />
+            <Avatar name={this.props.item.projectName} round="true" size="50" />
           </div>
           <div className="item-content">
             {
               this.state.editMode ? 
                 <div>
-                  <input name="assignee" value={this.state.item.assignee} onChange={this.onChangeEvent} />
+                  <input name="projectName" value={this.state.item.projectName} onChange={this.onChangeEvent} />
                   <textarea name="description" value={this.state.item.description} style={{ width: '90%' }} onChange={this.onChangeEvent} />
                 </div>
                 :
                 <div>
-                  <div className="item-author">{this.props.item.assignee}</div>
+                  <div className="item-author">{this.props.item.projectName}</div>
                   <p>{this.props.item.description}</p>
                 </div>
             }
